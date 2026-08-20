@@ -9,8 +9,8 @@
   "use strict";
 
   const CONFIG = {
-    whatsappNumber: "YOUR_WHATSAPP_NUMBER",
-    email: "hello@bharatinfotechs.com",
+    whatsappNumber: "918840751012",
+    email: "infotechsbharat@gmail.com",
     formEndpoint: "https://api.web3forms.com/submit"
   };
 
