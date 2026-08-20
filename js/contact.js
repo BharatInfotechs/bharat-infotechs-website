@@ -1,10 +1,4 @@
-/* Bharat Infotechs — Contact integrations
- *
- * BEFORE DEPLOYMENT:
- * 1) Set WHATSAPP_NUMBER to your business number, international format, no + or spaces.
- * 2) Replace YOUR_WEB3FORMS_ACCESS_KEY in index.html with your Web3Forms access key.
- * 3) Email fallback is hello@bharatinfotechs.com.
- */
+/* Bharat Infotechs — Contact integrations */
 (function () {
   "use strict";
 
@@ -14,110 +8,141 @@
     formEndpoint: "https://api.web3forms.com/submit"
   };
 
+  function track(name, params) {
+    if (typeof window.gtag === "function") window.gtag("event", name, params || {});
+  }
+
   function buildWhatsAppUrl(message) {
     const number = CONFIG.whatsappNumber.replace(/\D/g, "");
-    if (!number || number === "YOUR_WHATSAPP_NUMBER") return null;
+    if (!number || number.length < 10) return null;
     return "https://wa.me/" + number + "?text=" + encodeURIComponent(message);
   }
 
   function openWhatsApp(message) {
     const url = buildWhatsAppUrl(message);
     if (!url) {
-      alert("WhatsApp is not configured yet. Add your number in js/contact.js.");
+      alert("WhatsApp is not configured yet. Please contact us by email.");
       return false;
     }
     window.open(url, "_blank", "noopener,noreferrer");
     return true;
   }
 
-  function track(name, params) {
-    if (typeof window.gtag === "function") window.gtag("event", name, params || {});
+  function enquiryMessage(form) {
+    const data = new FormData(form);
+    return [
+      "Hello Bharat Infotechs,",
+      "",
+      "Project enquiry",
+      "Name: " + (data.get("name") || ""),
+      "Company: " + (data.get("company") || ""),
+      "Email: " + (data.get("email") || ""),
+      "Phone: " + (data.get("phone") || ""),
+      "Service: " + (data.get("service") || ""),
+      "Budget: " + (data.get("budget") || ""),
+      "",
+      "Details:",
+      data.get("message") || ""
+    ].join("\n");
   }
 
-  // WhatsApp buttons
+  // Generic WhatsApp CTAs.
   document.querySelectorAll("[data-whatsapp]").forEach(function (el) {
     el.addEventListener("click", function (event) {
       event.preventDefault();
       const message = el.getAttribute("data-whatsapp-message") ||
         "Hello Bharat Infotechs, I would like to discuss a project.";
-      if (openWhatsApp(message)) track("whatsapp_click", { location: "floating_button" });
+      if (openWhatsApp(message)) track("whatsapp_click", { location: el.className || "cta" });
     });
   });
 
-  // Enquiry form -> WhatsApp
-  const whatsappEnquiry = document.querySelector("[data-whatsapp-enquiry]");
-  if (whatsappEnquiry) {
-    whatsappEnquiry.addEventListener("click", function () {
-      const form = document.getElementById("enquiryForm");
-      const data = new FormData(form);
-      const message =
-        "Hello Bharat Infotechs,\n\n" +
-        "Project enquiry\n" +
-        "Name: " + (data.get("name") || "") + "\n" +
-        "Company: " + (data.get("company") || "") + "\n" +
-        "Email: " + (data.get("email") || "") + "\n" +
-        "Phone: " + (data.get("phone") || "") + "\n" +
-        "Service: " + (data.get("service") || "") + "\n" +
-        "Budget: " + (data.get("budget") || "") + "\n\n" +
-        "Details:\n" + (data.get("message") || "");
+  const form = document.getElementById("enquiryForm");
+  const status = document.getElementById("formStatus");
 
-      if (openWhatsApp(message)) track("whatsapp_enquiry", { service: data.get("service") || "unknown" });
+  // Enquiry form -> WhatsApp. Validate the form first so the WhatsApp message is complete.
+  const whatsappEnquiry = document.querySelector("[data-whatsapp-enquiry]");
+  if (whatsappEnquiry && form) {
+    whatsappEnquiry.addEventListener("click", function () {
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (openWhatsApp(enquiryMessage(form))) {
+        track("whatsapp_enquiry", { service: form.elements.service?.value || "unknown" });
+      }
     });
   }
 
-  // Email click tracking
+  // Project/service cards can open the enquiry form with the service preselected.
+  document.querySelectorAll("[data-service]").forEach(function (el) {
+    el.addEventListener("click", function () {
+      if (!form) return;
+      const service = el.getAttribute("data-service");
+      const select = form.elements.service;
+      if (select && service) {
+        const option = Array.from(select.options).find(function (opt) { return opt.text === service; });
+        if (option) select.value = service;
+      }
+    });
+  });
+
+  // Email click tracking.
   document.querySelectorAll("[data-email-cta]").forEach(function (el) {
     el.addEventListener("click", function () {
       track("email_click", { email: CONFIG.email });
     });
   });
 
-  // Project enquiry form
-  const form = document.getElementById("enquiryForm");
-  const status = document.getElementById("formStatus");
+  if (!form) return;
 
-  if (form) {
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        return;
+    const accessKeyInput = form.querySelector('[name="access_key"]');
+    const accessKey = accessKeyInput ? accessKeyInput.value.trim() : "";
+    if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
+      status.textContent = "Online form is not configured. Please use WhatsApp or email.";
+      track("form_not_configured");
+      return;
+    }
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+    status.textContent = "Sending enquiry…";
+
+    try {
+      const payload = Object.fromEntries(new FormData(form));
+      payload.subject = "New Bharat Infotechs Project Enquiry — " + (payload.service || "General");
+      payload.from_name = "Bharat Infotechs Website";
+      payload.replyto = payload.email || CONFIG.email;
+
+      const response = await fetch(CONFIG.formEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Submission failed");
       }
 
-      const accessKey = form.querySelector('[name="access_key"]').value;
-      if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
-        status.textContent = "Form is not configured yet. Use WhatsApp or email for now.";
-        track("form_not_configured");
-        return;
-      }
-
-      status.textContent = "Sending enquiry…";
-
-      try {
-        const response = await fetch(CONFIG.formEndpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: JSON.stringify(Object.fromEntries(new FormData(form)))
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          form.reset();
-          status.textContent = "Thanks — your enquiry has been sent.";
-          track("enquiry_submitted", { service: "website" });
-        } else {
-          throw new Error(result.message || "Submission failed");
-        }
-      } catch (error) {
-        console.error(error);
-        status.textContent = "Could not send right now. Please use WhatsApp or email.";
-        track("enquiry_failed");
-      }
-    });
-  }
+      form.reset();
+      status.textContent = "Thanks — your enquiry has been sent successfully.";
+      track("enquiry_submitted", { service: payload.service || "unknown" });
+    } catch (error) {
+      console.error("Bharat Infotechs enquiry error:", error);
+      status.textContent = "Could not send right now. Please use WhatsApp or email.";
+      track("enquiry_failed", { message: error.message || "unknown" });
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  });
 })();

@@ -17,12 +17,15 @@
       wheelMultiplier: 1,
       touchMultiplier: 1.1
     });
-    function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
+    // Use one animation clock only. Running Lenis from both rAF and GSAP
+    // doubles scroll work and can make the whole page feel sluggish.
     if (window.gsap && window.ScrollTrigger) {
       lenis.on('scroll', ScrollTrigger.update);
       gsap.ticker.add(function(time){ lenis.raf(time * 1000); });
-      gsap.ticker.lagSmoothing(0);
+      gsap.ticker.lagSmoothing(1000, 16);
+    } else {
+      function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
     }
   }
 
@@ -117,7 +120,15 @@
       a.classList.toggle('active', a.getAttribute('href') === '#' + current);
     });
   }
-  window.addEventListener('scroll', updateActiveNav);
+  var navUpdateQueued = false;
+  window.addEventListener('scroll', function(){
+    if (navUpdateQueued) return;
+    navUpdateQueued = true;
+    requestAnimationFrame(function(){
+      navUpdateQueued = false;
+      updateActiveNav();
+    });
+  }, { passive: true });
   updateActiveNav();
 
   /* ======================================================

@@ -704,3 +704,27 @@ header.site-nav.scrolled{
   .nav-logo-mark{ width:34px; height:34px; flex-basis:34px; border-radius:9px; }
   .nav-logo-name{ font-size:12px; }
 }
+
+/* ================= SELECTED WORK — EXPANDED PORTFOLIO ================= */
+.work-item{ text-decoration:none; color:inherit; }
+.work-item:nth-child(n+4){ padding-top:34px; padding-bottom:34px; }
+.work-item:nth-child(n+4) .work-title{ font-size:clamp(23px,3.4vw,38px); }
+.work-tag{ max-width:220px; }
+@media(max-width:780px){
+  .work-item:nth-child(n+4){ padding-top:30px; padding-bottom:30px; }
+  .work-item:nth-child(n+4) .work-title{ font-size:clamp(22px,7vw,30px); }
+}
+
+
+/* ============ FINAL FUNCTIONALITY POLISH ============ */
+.enquiry-form button[disabled]{ opacity:.55; pointer-events:none; }
+.enquiry-form select option{ background:#07070b; color:#f7f7fb; }
+.work-item[data-service]{ cursor:pointer; }
+.work-item[data-service] .work-tag{ transition:color .25s; }
+.work-item[data-service]:hover .work-tag{ color:#d9d6ff; }
+@media(max-width:780px){
+  .work-list{ gap:0; }
+  .work-item{ min-height:84px; }
+  .form-actions .btn{ width:100%; justify-content:center; }
+  .form-status{ width:100%; }
+}

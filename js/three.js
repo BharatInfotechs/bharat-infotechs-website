@@ -142,8 +142,8 @@
     var camera = new THREE.PerspectiveCamera(42, window.innerWidth/window.innerHeight, 0.1, 100);
     camera.position.set(0, 0, 6.4);
 
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    var pixelCap = isMobile ? 1.5 : 2;
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: !isMobile, alpha: true, powerPreference: 'high-performance' });
+    var pixelCap = isMobile ? 1.25 : 1.5;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelCap));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 0);
@@ -151,7 +151,7 @@
     var colorA = new THREE.Color(0x9b8bff);
     var colorB = new THREE.Color(0x3d6bff);
 
-    var coreDetail = isMobile ? 3 : 5;
+    var coreDetail = isMobile ? 2 : 4;
     var coreGeo = new THREE.IcosahedronGeometry(1.55, coreDetail);
     var coreUniforms = {
       uTime: { value: 0 },
@@ -182,7 +182,7 @@
     coreGroup.add(wireMesh);
 
     // particles
-    var particleCount = isMobile ? 500 : 1600;
+    var particleCount = isMobile ? 350 : 900;
     var pGeo = new THREE.BufferGeometry();
     var posArr = new Float32Array(particleCount * 3);
     var sizeArr = new Float32Array(particleCount);
@@ -254,11 +254,23 @@
 
       canvas.style.opacity = String(Math.max(1 - dissolve * 0.85 + ctaProgress * 0.55, 0.15));
     }
-    window.addEventListener('scroll', updateScrollProgress);
+    var scrollUpdateQueued = false;
+    window.addEventListener('scroll', function(){
+      if (scrollUpdateQueued) return;
+      scrollUpdateQueued = true;
+      requestAnimationFrame(function(){
+        scrollUpdateQueued = false;
+        updateScrollProgress();
+      });
+    }, { passive: true });
 
     var clock = new THREE.Clock();
-    function animate(){
+    var lastFrame = 0;
+    var frameInterval = isMobile ? (1000 / 45) : (1000 / 60);
+    function animate(now){
       requestAnimationFrame(animate);
+      if (now - lastFrame < frameInterval) return;
+      lastFrame = now;
       var t = clock.getElapsedTime();
       coreUniforms.uTime.value = t;
       particleUniforms.uTime.value = t;
