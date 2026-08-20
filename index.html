@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bharat Infotechs — We build digital experiences</title>
+<meta name="description" content="Bharat Infotechs — a creative technology studio building websites, applications and custom software." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-mark">BI</div>
+  <div class="loader-sub">Initializing experience</div>
+  <div class="loader-bar"><div class="loader-bar-fill" id="loaderFill"></div></div>
+</div>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<canvas id="webgl-canvas"></canvas>
+
+<header class="site-nav" id="siteNav">
+  <a href="#top" class="nav-logo magnetic">
+    <span class="nav-logo-mark">BI</span>
+    <span class="nav-logo-name">Bharat Infotechs</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about" data-nav>About</a></li>
+    <li><a href="#services" data-nav>Services</a></li>
+    <li><a href="#work" data-nav>Work</a></li>
+    <li><a href="#process" data-nav>Process</a></li>
+    <li><a href="#contact" data-nav>Contact</a></li>
+  </ul>
+  <a href="#enquiry" class="nav-cta magnetic">Let's Talk ↗</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" data-mnav>About</a>
+  <a href="#services" data-mnav>Services</a>
+  <a href="#work" data-mnav>Work</a>
+  <a href="#process" data-mnav>Process</a>
+  <a href="#contact" data-mnav>Contact</a>
+  <a href="#enquiry" class="nav-cta" data-mnav>Let's Talk ↗</a>
+</div>
+
+<main id="top">
+
+  <section class="hero" id="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <div class="eyebrow hero-eyebrow">Creative Technology / Software Development</div>
+        <h1 class="hero-headline">
+          <span class="line"><span class="line-inner">We build</span></span>
+          <span class="line"><span class="line-inner grad-text">digital</span></span>
+          <span class="line"><span class="line-inner">experiences.</span></span>
+        </h1>
+        <p class="hero-support">Websites, applications and custom software engineered to make businesses move forward.</p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-primary magnetic">Explore our work ↗</a>
+          <a href="#contact" class="btn btn-outline magnetic">Start a project</a>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="scroll-cue-line"></span></div>
+  </section>
+
+  <section class="panel section-pad" id="about">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">01 / About</div>
+      </div>
+      <div class="about-grid">
+        <h2 class="section-headline about-split">Technology is powerful. Experience makes it memorable.</h2>
+        <div class="about-copy reveal">
+          <p>Bharat Infotechs combines engineering, design and emerging technologies to create digital products that are useful, fast and impossible to ignore.</p>
+        </div>
+      </div>
+      <div class="about-stats" style="display:grid; grid-template-columns:repeat(3,1fr); margin-top:80px; gap:24px;">
+        <div class="stat reveal"><b>40+</b><span>Products shipped</span></div>
+        <div class="stat reveal"><b>12</b><span>Industries served</span></div>
+        <div class="stat reveal"><b>3</b><span>Disciplines under one roof</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel section-pad" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">02 / Services</div>
+        <h2 class="section-headline">What we build.</h2>
+      </div>
+    </div>
+    <div class="container">
+      <div class="services-grid">
+        <div class="service-card tilt-card">
+          <span class="service-index">01</span>
+          <div>
+            <h3 class="service-title">Immersive Web</h3>
+            <p class="service-desc">WebGL / Three.js / Interactive websites / Motion</p>
+          </div>
+        </div>
+        <div class="service-card tilt-card">
+          <span class="service-index">02</span>
+          <div>
+            <h3 class="service-title">Web &amp; App Development</h3>
+            <p class="service-desc">React / Next.js / Flutter / APIs</p>
+          </div>
+        </div>
+        <div class="service-card tilt-card">
+          <span class="service-index">03</span>
+          <div>
+            <h3 class="service-title">Custom Software</h3>
+            <p class="service-desc">CRM / dashboards / business systems / integrations</p>
+          </div>
+        </div>
+        <div class="service-card tilt-card">
+          <span class="service-index">04</span>
+          <div>
+            <h3 class="service-title">UI / UX</h3>
+            <p class="service-desc">Product design / interaction design / design systems</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel section-pad" id="work">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">03 / Selected Work</div>
+        <h2 class="section-headline">Ideas into interfaces.</h2>
+      </div>
+      <div class="work-list">
+        <a href="#" class="work-item" data-tone="1">
+          <span class="work-index">01</span>
+          <span class="work-title">SellerGrid AI</span>
+          <span class="work-tag">SaaS / AI Dashboard</span>
+        </a>
+        <a href="#" class="work-item" data-tone="2">
+          <span class="work-index">02</span>
+          <span class="work-title">Custom CRM</span>
+          <span class="work-tag">Business Platform</span>
+        </a>
+        <a href="#" class="work-item" data-tone="3">
+          <span class="work-index">03</span>
+          <span class="work-title">Immersive Commerce</span>
+          <span class="work-tag">WebGL Experience</span>
+        </a>
+      </div>
+    </div>
+    <div class="work-visual" id="workVisual"></div>
+  </section>
+
+  <section class="panel section-pad" id="process">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">04 / Process</div>
+        <h2 class="section-headline">How it comes together.</h2>
+      </div>
+      <div class="process-track">
+        <div class="process-line"></div>
+        <div class="process-line-fill" id="processFill"></div>
+        <div class="process-step">
+          <span class="process-dot"></span>
+          <div class="process-num">01</div>
+          <h3 class="process-title">Discover</h3>
+          <p class="process-desc">We map the problem, the audience and the constraints before touching a single pixel.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-dot"></span>
+          <div class="process-num">02</div>
+          <h3 class="process-title">Design</h3>
+          <p class="process-desc">Interfaces and systems that hold together — visually, structurally, and in motion.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-dot"></span>
+          <div class="process-num">03</div>
+          <h3 class="process-title">Build</h3>
+          <p class="process-desc">Engineering that's fast, tested, and built to scale past launch day.</p>
+        </div>
+        <div class="process-step">
+          <span class="process-dot"></span>
+          <div class="process-num">04</div>
+          <h3 class="process-title">Elevate</h3>
+          <p class="process-desc">We keep refining after ship — performance, polish, and the next iteration.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel section-pad" id="stack">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">05 / The Stack</div>
+        <h2 class="section-headline">Tools we trust.</h2>
+      </div>
+      <div class="stack-cloud" id="stackCloud">
+        <span class="stack-item">Three.js</span>
+        <span class="stack-item">React</span>
+        <span class="stack-item">Next.js</span>
+        <span class="stack-item">Node.js</span>
+        <span class="stack-item">Flutter</span>
+        <span class="stack-item">MongoDB</span>
+        <span class="stack-item">PostgreSQL</span>
+        <span class="stack-item">Firebase</span>
+        <span class="stack-item">GSAP</span>
+        <span class="stack-item">WebGL</span>
+        <span class="stack-item">GLSL</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ PROJECT ENQUIRY FORM ============ -->
+  <section class="panel section-pad enquiry-section" id="enquiry">
+    <div class="container">
+      <div class="section-head">
+        <div class="eyebrow">06 / Project Enquiry</div>
+        <h2 class="section-headline">Tell us what you're building.</h2>
+      </div>
+
+      <form class="enquiry-form" id="enquiryForm">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+        <input type="hidden" name="subject" value="New Bharat Infotechs Project Enquiry">
+        <input type="hidden" name="from_name" value="Bharat Infotechs Website">
+        <input type="checkbox" name="botcheck" class="hidden-field" tabindex="-1" autocomplete="off">
+
+        <div class="form-grid">
+          <label>
+            <span>Name *</span>
+            <input type="text" name="name" placeholder="Your name" required>
+          </label>
+          <label>
+            <span>Company</span>
+            <input type="text" name="company" placeholder="Company / brand">
+          </label>
+          <label>
+            <span>Email *</span>
+            <input type="email" name="email" placeholder="you@company.com" required>
+          </label>
+          <label>
+            <span>Phone / WhatsApp</span>
+            <input type="tel" name="phone" placeholder="+91 ...">
+          </label>
+          <label>
+            <span>Service *</span>
+            <select name="service" required>
+              <option value="">Select a service</option>
+              <option>Immersive Web</option>
+              <option>Web & App Development</option>
+              <option>Custom Software</option>
+              <option>UI / UX</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>
+            <span>Budget</span>
+            <select name="budget">
+              <option value="">Select budget</option>
+              <option>Under ₹50,000</option>
+              <option>₹50,000 – ₹1,00,000</option>
+              <option>₹1,00,000 – ₹3,00,000</option>
+              <option>₹3,00,000+</option>
+              <option>Not decided</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="form-full">
+          <span>Project details *</span>
+          <textarea name="message" rows="6" placeholder="Tell us about the product, website, app or system you need..." required></textarea>
+        </label>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary magnetic">Send enquiry ↗</button>
+          <button type="button" class="btn btn-outline magnetic" data-whatsapp-enquiry>Continue on WhatsApp</button>
+          <span class="form-status" id="formStatus" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <a class="floating-whatsapp magnetic" href="#" data-whatsapp data-whatsapp-message="Hello Bharat Infotechs, I would like to discuss a project." aria-label="Chat with Bharat Infotechs on WhatsApp">
+    <span>WhatsApp</span> ↗
+  </a>
+
+  <section class="cta-section" id="contact">
+    <div class="container cta-inner">
+      <div class="eyebrow">Get in touch</div>
+      <h2 class="cta-headline reveal">Let's make the internet interesting.</h2>
+      <p class="cta-sub reveal">Have a product, idea or business that deserves a better digital experience?</p>
+      <div class="cta-actions reveal">
+        <a href="mailto:hello@bharatinfotechs.com" class="btn btn-primary magnetic" data-email-cta>Start a conversation ↗</a>
+        <a href="mailto:hello@bharatinfotechs.com" class="cta-email" data-email-cta>hello@bharatinfotechs.com</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Bharat Infotechs</span>
+    <span>Built with Three.js &amp; GLSL</span>
+  </footer>
+
+</main>
+
+<script>
+  // Emergency loader fallback: never leave the visitor stuck on the loading screen.
+  window.setTimeout(function(){
+    var loader = document.getElementById('loader');
+    if (loader) loader.classList.add('hide');
+  }, 6000);
+</script>
+
+<!-- ============ LIBRARIES (cdnjs) ============ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lenis/1.1.13/lenis.min.js"></script>
+
+<script src="js/animations.js"></script>
+<script src="js/three.js"></script>
+<script src="js/contact.js"></script>
+<script src="js/portfolio.js"></script>
+<script src="js/analytics.js"></script>
+</body>
+</html>
